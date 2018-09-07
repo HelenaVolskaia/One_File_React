@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Pure JS</title>
+<style>
+    body {
+       background-color: rgba(247, 243, 243, 0.92); 
+       text-align: center;
+    }
+    h4 {
+        text-align: center;
+    }
+    #pokemons div, #swapi div {
+       background-color: lightblue;
+       box-shadow: 0px 0px 10px rgba(57, 58, 60, 0.2);
+       display: inline-block;
+       width: 40%;
+       padding: 10px;
+       text-align: center;
+       margin: 10px;
+       background: white;
+       color: #4C5B5C;
+       padding: 16px;
+    }
+    </style>
+<script>
+    // async function requirements: Latest Chrome/FF browser or Babel: https://babeljs.io/docs/plugins/transform-async-to-generator/
+    async function fetchAsync (api) {
+    // await response of fetch call
+    let response = await fetch(api);
+    // only proceed once promise is resolved
+    let data = await response.json();
+    // only proceed once second promise is resolved
+    return data.results;
+    }
+    function showData(data, type){
+        data.map((value,i) => {
+            let item = document.createElement("div");
+            let node = document.createTextNode(value.name);
+            item.appendChild(node);
+            let element = document.getElementById(type);
+            element.appendChild(item);         
+        })
+    }
+</script>
+</head>
+    <body>
+        <div id="react_container"></div>
+        <div id="pokemons"> <h4>I'm Poke</h4></div>
+        <div id="swapi"> <h4>I'm Swapi</h4></div>
+    </body>
+    <script>
+        document.body.onload = fetchAsync('https://pokeapi.co/api/v2/pokemon/').then((data, type) => showData(data, "pokemons"));
+        document.body.onload = fetchAsync('https://swapi.co/api/people/').then((data, type) => showData(data, "swapi"));        
+    </script>
+      <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+      <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+      <script src="App.js"></script>
+</html>
